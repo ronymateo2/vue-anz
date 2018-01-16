@@ -25,7 +25,6 @@ export default {
   },
   methods:{
     loadData: function(){
-      const service = new BrochureService();      
       service.getBrochures()        
         .then((data)=> {
           this.brochures = data.content.data
