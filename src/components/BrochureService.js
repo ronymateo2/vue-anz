@@ -1,19 +1,13 @@
-import json from './enquiries.json'
-import json2 from './enquiries2.json'
-export default class BrochureService {
-  getBrochures () {
-    return new Promise(function (resolve, reject) {
-      setTimeout(function () {
-        resolve(json)
-      }, 2000)
-    })
-  }
+import axios from 'axios'
+axios.defaults.baseURL = 'http://awf-carlocardenas.c9users.io/api/v1/'
 
-  getBrochures2 () {
-    return new Promise(function (resolve, reject) {
-      setTimeout(function () {
-        resolve(json2)
-      }, 2000)
+export default class BrochureService {
+  getBrochures (page, perPage, status = 'inbox') {
+    return new Promise((resolve) => {
+      axios.get(`enquiries?page=${page}&per_page=${perPage}&status=${status}&$client_id=vue.app`)
+        .then(response => {
+          resolve(response.data)
+        })
     })
   }
 }

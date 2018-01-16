@@ -7,7 +7,7 @@
         </a>
       </li>
       <li v-for="index in indexs"  :key="index" :class="{active : index== activeindex}">
-        <a v-on:click="showPage(index,$event)" href="#" :data_page="index"> {{index}}</a>        
+        <a v-on:click.prevent="showPage(index,$event)" href="#" :data_page="index"> {{index}}</a>        
       </li>
       <li>
         <a href="#" data_page="2" aria-label="Next" v-on:click.prevent="goNext($event)">

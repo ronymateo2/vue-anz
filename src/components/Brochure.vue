@@ -25,14 +25,15 @@ export default {
   },
   methods:{
     loadData: function(){
-      service.getBrochures()        
+      const service = new BrochureService();
+      service.getBrochures(this.currentIndex,10)        
         .then((data)=> {
           this.brochures = data.content.data
         })
     },
     onSelected:function(index){      
       const service = new BrochureService();      
-      return service.getBrochures2()
+      return service.getBrochures(index,10)
         .then(data=>{
             this.brochures = data.content.data;
             this.currentIndex = index;
