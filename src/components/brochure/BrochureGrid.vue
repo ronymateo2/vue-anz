@@ -1,4 +1,5 @@
 <template>
+<div>  
   <table class="table table-striped">
     <thead>
       <tr>
@@ -20,12 +21,10 @@
         <td>{{brochure.client.name}}</td>
         <td>{{brochure.consultant}}</td>              
         <td class="site justnzholidays-com"></td>        
-        <td>{{brochure.createdAt}}</td>
+        <td>{{brochure.created_at}}</td>
         <td></td>
-        <td>
-          <button class="btn btn-primary" data-toggle="modal" data-target="#myModal" data_id="783" data-placement="top" title="View">
-            <i class="fa fa-eye" aria-hidden="true"></i>
-          </button>
+        <td>          
+          <anzcro-brochure-view :brochure="brochure"></anzcro-brochure-view>
         </td>
         <td>
           <button type="button" class="btn btn-danger trash" data-toggle="modal" data-target="#myModal" aria-label="Left Align"
@@ -36,13 +35,27 @@
       </tr>
     </tbody>
   </table>
+  </div>
 </template>
 
 <script>
+  import AnzcroBrochureView from './AnzcroBrochureView.vue'
   export default {
     name: 'anzcro-grid',     
     props: {
-     brochures: Array
+      brochures: Array,          
+    },    
+    data(){
+      return { brochureItem: {}, modalShown : false}
+    },
+   components: {
+      'anzcro-brochure-view': AnzcroBrochureView,      
+    },
+    methods:{
+      showinfo: function(brochureItem){       
+          this.modalShown = true 
+          this.brochureItem = brochureItem;
+      },
     }
   }
 </script>

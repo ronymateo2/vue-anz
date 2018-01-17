@@ -10,4 +10,12 @@ export default class BrochureService {
         })
     })
   }
+  getTrash (page, perPage, status = 'trash') {
+    return new Promise((resolve) => {
+      axios.get(`enquiries?page=${page}&per_page=${perPage}&status=${status}&$client_id=vue.app`)
+        .then(response => {
+          resolve(response.data)
+        })
+    })
+  }
 }
