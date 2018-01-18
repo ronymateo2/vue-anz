@@ -1,5 +1,5 @@
 <template>
-<div>  
+<div>
   <table class="table table-striped">
     <thead>
       <tr>
@@ -14,16 +14,16 @@
         <th></th>
       </tr>
     </thead>
-    <tbody>    
+    <tbody>
       <tr v-for="brochure in brochures"  :key="brochure.id" >
         <td>{{brochure.id}}</td>
         <td>{{brochure.subject}}</td>
         <td>{{brochure.client.name}}</td>
-        <td>{{brochure.consultant}}</td>              
-        <td class="site justnzholidays-com"></td>        
+        <td>{{brochure.consultant}}</td>
+        <td class="site justnzholidays-com"></td>
         <td>{{brochure.created_at}}</td>
         <td></td>
-        <td>          
+        <td>
           <anzcro-brochure-view :brochure="brochure"></anzcro-brochure-view>
         </td>
         <td>
@@ -39,25 +39,26 @@
 </template>
 
 <script>
-  import AnzcroBrochureView from './AnzcroBrochureView.vue'
-  export default {
-    name: 'anzcro-grid',     
-    props: {
-      brochures: Array,          
-    },    
-    data(){
-      return { brochureItem: {}, modalShown : false}
-    },
-   components: {
-      'anzcro-brochure-view': AnzcroBrochureView,      
-    },
-    methods:{
-      showinfo: function(brochureItem){       
-          this.modalShown = true 
-          this.brochureItem = brochureItem;
-      },
+import AnzcroBrochureView from './BrochureView.vue'
+export default {
+  name: 'brochure-grid',
+  props: {
+    brochures: Array
+  },
+  data () {
+    return { brochureItem: {},
+      modalShown: false}
+  },
+  components: {
+    'anzcro-brochure-view': AnzcroBrochureView
+  },
+  methods: {
+    showinfo: function (brochureItem) {
+      this.modalShown = true
+      this.brochureItem = brochureItem
     }
   }
+}
 </script>
 
 <style>

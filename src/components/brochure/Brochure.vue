@@ -1,42 +1,42 @@
 <template>
-  <div>      
-      <anzcro-grid :brochures="brochures"></anzcro-grid>
+  <div>
+      <brochure-grid :brochures="brochures"></brochure-grid>
       <anzcro-pagination :pagging="pagging"  @on-selected="onSelected" :activeindex="currentIndex"></anzcro-pagination>
   </div>
 </template>
 <script>
 
-import AnzcroGrid from './BrochureGrid.vue'
+import BrochureGrid from './BrochureGrid.vue'
 import AnzcroPagination from '../grid/AnzcroPagination.vue'
 import BrochureService from '../../services/BrochureService.js'
 export default {
   name: 'Brochure',
-  components: {    
-    'anzcro-grid':AnzcroGrid,
+  components: {
+    'brochure-grid': BrochureGrid,
     'anzcro-pagination': AnzcroPagination
   },
-  data(){
-   return { brochures: [], pagging :{}, currentIndex:1,inboxRecords:0 }
+  data () {
+    return { brochures: [], pagging: {}, currentIndex: 1, inboxRecords: 0 }
   },
-  created: function(){
-      this.loadData();
+  created: function () {
+    this.loadData()
   },
-  methods:{
-    loadData: function(){
-      const service = new BrochureService();
-      service.getBrochures(this.currentIndex,10)        
-        .then((data)=> {
-          this.brochures = data.content.data;
-          this.inboxRecords = data.content.total;
+  methods: {
+    loadData: function () {
+      const service = new BrochureService()
+      service.getBrochures(this.currentIndex, 10)
+        .then((data) => {
+          this.brochures = data.content.data
+          this.inboxRecords = data.content.total
         })
     },
-    onSelected:function(index){      
-      const service = new BrochureService();      
-      return service.getBrochures(index,10)
-        .then(data=>{
-            this.brochures = data.content.data;
-            this.currentIndex = index;
-        });
+    onSelected: function (index) {
+      const service = new BrochureService()
+      return service.getBrochures(index, 10)
+        .then(data => {
+          this.brochures = data.content.data
+          this.currentIndex = index
+        })
     }
   }
 }
