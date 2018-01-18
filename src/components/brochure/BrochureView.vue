@@ -30,7 +30,7 @@
                         <a aria-expanded="false" href="#email" data-toggle="tab">Email</a>
                     </li>
                     <li>
-                        <select class="select2-status">
+                        <select class="select2-status" v-model="brochureStatus">
                             <option :value ="statuses['inbox'].description">{{statuses['inbox'].description}}</option>
                             <option v-for ="status in statuses['inbox'].next" :key="status" :value="status">{{statuses[status].description}}</option>
                         </select>
@@ -67,9 +67,9 @@
                                       <tr>
                                         <td>Consultant</td>
                                         <td>
-                                            <select v-if="user.roles.find(e=> e.name == 'admin') ">
+                                            <select v-if="user.roles.find(e=> e.name == 'admin') " v-model="brochureConsultant">
                                                 <option value=""></option>
-                                                <option v-for="consultant in consultants" :key="consultant.id" :value="consultant.id" :selected="isSelected(consultant.id)" >{{consultant.name}}</option>
+                                                <option v-for="consultant in consultants" :key="consultant.id" :value="consultant.id" >{{consultant.name}}</option>
                                             </select>
                                         </td>
                                       </tr>
@@ -109,30 +109,49 @@ export default {
       isActive: false,
       statuses: window.Statuses,
       consultants: window.Consultants,
-      user: window.User
+      user: window.User,
+      brochureConsultant: '',
+      brochureStatus: window.Statuses['inbox'].description
     }
   },
   methods: {
+    setConsultant: function () {
+      const metaConsultant = this.consultants.find(t => this.isSelected(t.id))
+      this.brochureConsultant = metaConsultant.id
+    },
+    setStatus: function () {
+      this.brochureStatus = this.statuses['inbox'].description
+    },
     evaluate: function (meta) {
       return ['quotes', 'notes', 'consultant'].indexOf(meta) < 0
     },
     close: function () {
       this.isActive = false
+      this.setConsultant()
+      this.setStatus()
     },
     open: function () {
       this.isActive = true
+      this.setConsultant()
+      this.setStatus()
     },
     isSelected: function (consultantId) {
-      /* eslint-disable */ 
-      const metaConsultant = this.brochure.enquiry_metas.find(t => t.key === 'consultant' && t.value == consultantId )
-      if(metaConsultant) {          
-          const consultant = this.consultants.find(t=> t.id == metaConsultant.value);          
-          this.$set(this.brochure, 'consultant', consultant.name);
+      /* eslint-disable */
+      const metaConsultant = this.brochure.enquiry_metas.find(
+        t => t.key === 'consultant' && t.value == consultantId
+      )
+      if (metaConsultant) {
+        this.brochureConsultant = consultantId
+        const consultant = this.consultants.find(
+          t => t.id == metaConsultant.value
+        )
+        this.$set(this.brochure, 'consultant', consultant.name)
       }
-      return metaConsultant;
-    },    
-    save:function(){
-
+      return metaConsultant
+    },
+    save: function () {
+      console.log(this.brochureConsultant)
+      console.log(this.brochureStatus)
     }
   }
 }
