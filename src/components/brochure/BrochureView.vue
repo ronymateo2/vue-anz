@@ -1,7 +1,7 @@
 <template>
 <div>
   <button class="btn btn-primary" data-toggle="modal"  v-on:click.prevent="open()"  data-target="#myModal" data_id="783" data-placement="top" title="View">
-            <i class="fa fa-eye" aria-hidden="true"></i>
+            <i class="glyphicons glyphicons-eye-open" aria-hidden="true"></i>
   </button>
   <div>
   </div>
@@ -31,10 +31,8 @@
                     </li>
                     <li>
                         <select class="select2-status">
-                            <!-- <option value="<%= enquiry.get("status") %>"><%= Statuses[enquiry.get("status")].description %></option>
-                            <% for (var index in Statuses[enquiry.get("status")].next) { %>
-                               <option value="<%= Statuses[enquiry.get("status")].next[index] %>"><%= Statuses[Statuses[enquiry.get("status")].next[index]].description %></option>
-                            <% } %> -->
+                            <option :value ="statuses['inbox'].description">{{statuses['inbox'].description}}</option>
+                            <option v-for ="status in statuses['inbox'].next" :key="status" :value="status">{{statuses[status].description}}</option>
                         </select>
                     </li>
                 </ul>
@@ -68,47 +66,13 @@
                                       </tr>
                                       <tr>
                                         <td>Consultant</td>
-                                        <td>TODO:resolve</td>
+                                        <td>
+                                            <select v-if="user.roles.find(e=> e.name == 'admin') ">
+                                                <option value=""></option>
+                                                <option v-for="consultant in consultants" :key="consultant.id" :value="consultant.id" :selected="isSelected(consultant.id)" >{{consultant.name}}</option>
+                                            </select>
+                                        </td>
                                       </tr>
-
-                                        <!-- <% _.each(enquiry.get("enquiry_metas"), function(meta) { %>
-
-                                            <% if ( ['quotes', 'notes', 'consultant'].indexOf(meta.key) < 0 ) { %>
-
-                                                <tr>
-                                                    <td><%= _.capitalize(meta.key.replace("_"," ")) %></td>
-                                                    <td><%= meta.value %></td>
-                                                </tr>
-
-                                            <% } %>
-
-                                        <% }); %>
-                                        <tr>
-                                            <td>Consultant</td>
-                                            <td>
-                                                <%
-                                                    var consultant_id = parseInt((enquiry.getMetaByKey('consultant') || {value:0}).value);
-                                                    if ( User.hasRole('admin') ) {
-                                                %>
-
-                                                    <select name="consultant">
-                                                        <option value="">-- Select Consultant --</option>
-
-                                                        <% Consultants.forEach(function(consultant) { %>
-
-                                                           <option value="<%= consultant.id %>"<%= consultant.id === consultant_id ? ' selected' : '' %>><%= consultant.name %></option>
-
-                                                        <% }) %>
-
-                                                    </select>
-
-                                                <% } else { %>
-
-                                                   <%= (Consultants.getConsultantById(consultant_id) !== null ? Consultants.getConsultantById(consultant_id).name : '') %>
-
-                                                <% } %>
-                                            </td>
-                                        </tr> -->
                                     </tbody>
                                 </table>
                             </div>
@@ -125,8 +89,8 @@
                 </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Save changes</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal" v-on:click.prevent="close()" >Close</button>
+          <button type="button" class="btn btn-primary" v-on:click.prevent="save()" >Save changes</button>
         </div>
       </div>
     </div>
@@ -142,7 +106,10 @@ export default {
   },
   data () {
     return {
-      isActive: false
+      isActive: false,
+      statuses: window.Statuses,
+      consultants: window.Consultants,
+      user: window.User
     }
   },
   methods: {
@@ -154,6 +121,18 @@ export default {
     },
     open: function () {
       this.isActive = true
+    },
+    isSelected: function (consultantId) {
+      /* eslint-disable */ 
+      const metaConsultant = this.brochure.enquiry_metas.find(t => t.key === 'consultant' && t.value == consultantId )
+      if(metaConsultant) {          
+          const consultant = this.consultants.find(t=> t.id == metaConsultant.value);          
+          this.$set(this.brochure, 'consultant', consultant.name);
+      }
+      return metaConsultant;
+    },    
+    save:function(){
+
     }
   }
 }

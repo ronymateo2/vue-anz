@@ -5,7 +5,7 @@
         <tr>
           <th>ID</th>
           <th>Subject</th>
-          <th>Quote/Booking #<th>
+          <th>Quote/Booking #</th>
           <th>Client</th>
           <th>Site</th>
           <th>Consultant</th>
@@ -23,9 +23,9 @@
           <td>{{trash.consultant}}</td>
           <td>{{trash.created_at}}</td>
           <td>
-            <button type="button" class="btn btn-danger trash" data-toggle="modal" data-target="#myModal" aria-label="Left Align"
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" aria-label="Left Align"
               data_id="783" data-placement="top" title="Trash">
-              <i class="glyphicon glyphicon-trash" aria-hidden="true"></i>
+              <i class="glyphicons glyphicons-eye-open" aria-hidden="true"></i>
             </button>
           </td>
         </tr>
