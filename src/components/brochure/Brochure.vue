@@ -8,7 +8,8 @@
 
 import BrochureGrid from './BrochureGrid.vue'
 import AnzcroPagination from '../grid/AnzcroPagination.vue'
-import BrochureService from '../../services/BrochureService.js'
+import {mapGetters, mapActions} from 'vuex'
+
 export default {
   name: 'Brochure',
   components: {
@@ -16,27 +17,20 @@ export default {
     'anzcro-pagination': AnzcroPagination
   },
   data () {
-    return { brochures: [], pagging: {}, currentIndex: 1, inboxRecords: 0 }
+    return { pagging: {}, currentIndex: 1 }
   },
+  computed: mapGetters({
+    brochures: 'getbrochures'
+  }),
   created: function () {
-    this.loadData()
+    this.loadBrochures({page: this.currentIndex, perPage: 10})
   },
   methods: {
-    loadData: function () {
-      const service = new BrochureService()
-      service.getBrochures(this.currentIndex, 10)
-        .then((data) => {
-          this.brochures = data.content.data
-          this.inboxRecords = data.content.total
-        })
-    },
+    ...mapActions(['loadBrochures']),
     onSelected: function (index) {
-      const service = new BrochureService()
-      return service.getBrochures(index, 10)
-        .then(data => {
-          this.brochures = data.content.data
-          this.currentIndex = index
-        })
+      this.loadBrochures({page: index, perPage: 10}).then((data) => {
+        this.currentIndex = index
+      })
     }
   }
 }

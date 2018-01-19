@@ -3,6 +3,7 @@
 import Vue from 'vue'
 import Layout from './components/shared/Layout'
 import router from './router'
+import store from './store/index'
 
 Vue.config.productionTip = false
 
@@ -15,6 +16,7 @@ Vue.filter('capitalize', function (value) {
 new Vue({
   el: '#app',
   router,
+  store,
   components: { Layout },
   template: '<Layout/>'
 })

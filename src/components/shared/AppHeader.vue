@@ -9,10 +9,11 @@
     </ul>
 </template>
 <script>
+import {mapGetters} from 'vuex'
 export default {
   name: 'anzcro-tab',
-  props: {
-    inboxRecord: Number
-  }
+  computed: mapGetters({
+    inboxRecord: 'getbrochuresCount'
+  })
 }
 </script>

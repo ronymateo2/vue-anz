@@ -62,9 +62,7 @@
                         <td>Country</td>
                         <td>
                             <select name="address_country" class="form-control" style="width: 50%">
-                                <!-- <% for (var property in Countries) { %>
-                                    <option value="<%= Countries[property] %>"><%= Countries[property] %></option>
-                                <% } %> -->
+                                <option v-for="(value,key) in countries" :value="key" :key="key" >{{value}}</option>
                             </select>
                         </td>
                     </tr>
@@ -84,6 +82,10 @@
             </table>
         </div>
     </div>
+    <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal" v-on:click.prevent="close()" >Close</button>
+          <button type="button" class="btn btn-primary" v-on:click.prevent="save()" >Save changes</button>
+    </div>
 </div>
 </template>
 
@@ -92,8 +94,20 @@ export default {
   name: 'brochure-client',
   props: {
     brochure: Object
-  }
+  },
+  data () {
+    return {
+      countries: window.Countries
+    }
+  },
+  methods: {
+    close: function () {
 
+    },
+    save: function () {
+
+    }
+  }
 }
 </script>
 

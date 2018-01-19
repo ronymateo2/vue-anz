@@ -15,10 +15,10 @@
           </div>
           <div class="modal-body">
             <ul class="nav nav-pills">
-              <li  v-bind:class="{active : isActiveTab('details')}" v-on:click.prevent="makeActiveTab('details')">
+              <li v-bind:class="{active : isActiveTab('details')}" v-on:click.prevent="makeActiveTab('details')">
                 <a aria-expanded="true" href="#" data-toggle="tab">Details</a>
               </li>
-              <li v-bind:class="{active : isActiveTab('client')}"  v-on:click.prevent="makeActiveTab('client')">
+              <li v-bind:class="{active : isActiveTab('client')}" v-on:click.prevent="makeActiveTab('client')">
                 <a aria-expanded="false" href="#client" data-toggle="tab">Client</a>
               </li>
               <li>
@@ -30,10 +30,10 @@
             </ul>
             <!-- Tab panes -->
             <div class="tab-content">
-              <div class="tab-pane fade" id='details' v-bind:class="{'active in': isActiveTab('details')}" >
+              <div class="tab-pane fade" id='details' v-bind:class="{'active in': isActiveTab('details')}">
                 <brochure-details :brochure="brochure"></brochure-details>
               </div>
-              <div class="tab-pane fade" id="client"  v-bind:class="{'active in' : isActiveTab('client')}" >
+              <div class="tab-pane fade" id="client" v-bind:class="{'active in' : isActiveTab('client')}">
                 <brochure-view :brochure="brochure" />
               </div>
             </div>
@@ -106,13 +106,13 @@ export default {
         console.log(this.brochureConsultant)
         console.log(this.brochureStatus)
       },
-      makeActiveTab : function(value){
-      this.activeTab = value;
+      makeActiveTab: function (value) {
+        this.activeTab = value;
       },
-      isActiveTab : function (value){
-        return  this.activeTab == value
+      isActiveTab: function (value) {
+        return this.activeTab == value
       }
-    }  
+    }
   }
 </script>
 
