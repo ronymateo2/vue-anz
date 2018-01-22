@@ -45,6 +45,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import DetailsView from './DetailsView.vue'
 import ClientViewVue from './ClientView.vue'
 export default {
@@ -59,61 +60,39 @@ export default {
   data () {
     return {
       isActive: false,
-      statuses: window.Statuses,
-      consultants: window.Consultants,
       user: window.User,
       brochureConsultant: '',
-      brochureStatus: window.Statuses['inbox'].description,
       activeTab: 'details'
     }
   },
+  computed: {
+    ...mapGetters({
+      statuses: 'getStatuses',
+      brochureStatus: 'getbrochureStatus'
+    })
+  },
   methods: {
-    setConsultant: function () {
-      const metaConsultant = this.consultants.find(t => this.isSelected(t.id))
-      this.brochureConsultant = metaConsultant.id
-    },
-    setStatus: function () {
-      this.brochureStatus = this.statuses['inbox'].description
-    },
     evaluate: function (meta) {
       return ['quotes', 'notes', 'consultant'].indexOf(meta) < 0
     },
     close: function () {
       this.isActive = false
-      this.setConsultant()
-      this.setStatus()
     },
     open: function () {
       this.isActive = true
-      this.setConsultant()
-      this.setStatus()
     },
-    isSelected: function (consultantId) {
-      /* eslint-disable */
-        const metaConsultant = this.brochure.enquiry_metas.find(
-          t => t.key === 'consultant' && t.value == consultantId
-        )
-        if (metaConsultant) {
-          this.brochureConsultant = consultantId
-          const consultant = this.consultants.find(
-            t => t.id == metaConsultant.value
-          )
-          this.$set(this.brochure, 'consultant', consultant.name)
-        }
-        return metaConsultant
-      },
-      save: function () {
-        console.log(this.brochureConsultant)
-        console.log(this.brochureStatus)
-      },
-      makeActiveTab: function (value) {
-        this.activeTab = value;
-      },
-      isActiveTab: function (value) {
-        return this.activeTab == value
-      }
+    save: function () {
+      console.log(this.brochureConsultant)
+      console.log(this.brochureStatus)
+    },
+    makeActiveTab: function (value) {
+      this.activeTab = value
+    },
+    isActiveTab: function (value) {
+      return this.activeTab === value
     }
   }
+}
 </script>
 
 <style>

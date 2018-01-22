@@ -31,40 +31,33 @@
         </tr>
       </tbody>
     </table>
-    <anzcro-pagination :pagging="pagging" @on-selected="onSelected" :activeindex="currentIndex"></anzcro-pagination>
+    <anzcro-pagination  @on-selected="onSelected" :activeindex="currentIndex"></anzcro-pagination>
   </div>
 </template>
 
 <script>
-import BrochureService from '../../services/BrochureService.js'
+import { mapGetters, mapActions } from 'vuex'
 import AnzcroPagination from '../grid/AnzcroPagination.vue'
 export default {
   name: 'anzcro-trash',
   data () {
-    return { trashes: [], pagging: {}, currentIndex: 1 }
+    return { currentIndex: 1 }
   },
   components: {
     'anzcro-pagination': AnzcroPagination
   },
   created: function () {
-    this.loadTrashes()
+    this.loadTrashes({page: this.currentIndex, perPage: 10})
   },
+  computed: mapGetters({
+    trashes: 'getTrashes'
+  }),
   methods: {
-    loadTrashes () {
-      const service = new BrochureService()
-      service.getTrash(this.currentIndex, 10)
-        .then((data) => {
-          this.trashes = data.content.data
-          this.inboxRecords = data.content.total
-        })
-    },
+    ...mapActions(['loadTrashes']),
     onSelected: function (index) {
-      const service = new BrochureService()
-      return service.getTrash(index, 10)
-        .then(data => {
-          this.trashes = data.content.data
-          this.currentIndex = index
-        })
+      this.loadTrashes({page: index, perPage: 10}).then((data) => {
+        this.currentIndex = index
+      })
     }
   }
 }

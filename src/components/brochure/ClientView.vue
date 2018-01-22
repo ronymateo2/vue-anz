@@ -90,15 +90,16 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 export default {
   name: 'brochure-client',
   props: {
     brochure: Object
   },
-  data () {
-    return {
-      countries: window.Countries
-    }
+  computed: {
+    ...mapGetters({
+      countries: 'getCountries'
+    })
   },
   methods: {
     close: function () {

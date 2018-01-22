@@ -27,9 +27,9 @@
                     <tr>
                     <td>Consultant</td>
                     <td>
-                        <select v-if="user.roles.find(e=> e.name == 'admin') " v-model="brochureConsultant">
+                        <select v-if="user.roles.find(e=> e.name == 'admin') " >
                             <option value=""></option>
-                            <option v-for="consultant in consultants" :key="consultant.id" :value="consultant.id" >{{consultant.name}}</option>
+                            <option v-for="consultant in consultants" :key="consultant.id" :value="consultant.id"  :selected="brochure.consultantId === consultant.id ? 'selected' : ''">{{consultant.name}}</option>
                         </select>
                     </td>
                     </tr>
@@ -45,54 +45,29 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 export default {
   name: 'details-view',
   props: {
     brochure: Object
   },
-  data () {
-    return {
-      statuses: window.Statuses,
-      consultants: window.Consultants,
-      user: window.User,
-      brochureConsultant: '',
-      brochureStatus: window.Statuses['inbox'].description
-    }
+  computed: {
+    ...mapGetters({
+      consultants: 'getConsultants',
+      user: 'getUser',
+      brochureStatus: 'getBrochureStatus',
+      statuses: 'getStatuses'
+    })
   },
   methods: {
-    setConsultant: function () {
-      const metaConsultant = this.consultants.find(t => this.isSelected(t.id))
-      this.brochureConsultant = metaConsultant.id
-    },
-    setStatus: function () {
-      this.brochureStatus = this.statuses['inbox'].description
-    },
     evaluate: function (meta) {
       return ['quotes', 'notes', 'consultant'].indexOf(meta) < 0
     },
     close: function () {
       this.isActive = false
-      this.setConsultant()
-      this.setStatus()
     },
     open: function () {
       this.isActive = true
-      this.setConsultant()
-      this.setStatus()
-    },
-    isSelected: function (consultantId) {
-      /* eslint-disable */
-      const metaConsultant = this.brochure.enquiry_metas.find(
-        t => t.key === 'consultant' && t.value == consultantId
-      )
-      if (metaConsultant) {
-        this.brochureConsultant = consultantId
-        const consultant = this.consultants.find(
-          t => t.id == metaConsultant.value
-        )
-        this.$set(this.brochure, 'consultant', consultant.name)
-      }
-      return metaConsultant
     },
     save: function () {
       console.log(this.brochureConsultant)
