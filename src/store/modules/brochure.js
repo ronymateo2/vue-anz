@@ -4,7 +4,8 @@ import * as types from '../mutation-types'
 const state = {
   brochures: [],
   brochuresCount: 0,
-  isloaded: false
+  isloaded: false,
+  currentPage: 1
 }
 
 // getters
@@ -12,7 +13,7 @@ const getters = {
   getbrochuresCount: (state) => state.brochuresCount,
   getbrochures: state => state.brochures
 }
-
+// TODO: REFACTOR
 const actions = {
   loadBrochures ({commit, rootState}, {page, perPage}) {
     const service = new BrochureService()
@@ -22,9 +23,21 @@ const actions = {
 
       resolveConsultant(brochures, consultants)
 
-      commit(types.LOAD_BROCHURES, brochures)
-      commit(types.LOAD_BROCHURES_COUNT, data.content.total)
+      commit(types.LOAD_BROCHURES, { brochures, page, total: data.content.total })
     })
+  },
+
+  start ({commit, state, rootState, dispatch}, {page, perPage}) {
+    dispatch('loadBrochures', {page, perPage})
+    setInterval(() => {
+      const service = new BrochureService()
+      service.getBrochures(state.currentPage, perPage).then((data) => {
+        const brochures = data.content.data
+        const consultants = rootState.shared.consultants
+        resolveConsultant(brochures, consultants)
+        commit(types.LOAD_BROCHURES, { brochures, page: state.currentPage, total: data.content.total })
+      })
+    }, 1000 * 5)
   }
 }
 
@@ -43,11 +56,10 @@ const resolveConsultant = (brochures, consultants) => {
 }
 
 const mutations = {
-  [types.LOAD_BROCHURES] (state, brochures) {
+  [types.LOAD_BROCHURES] (state, {brochures, page, total}) {
     state.brochures = brochures
-  },
-  [types.LOAD_BROCHURES_COUNT] (state, count) {
-    state.brochuresCount = count
+    state.brochuresCount = total
+    state.currentPage = page
   }
 }
 

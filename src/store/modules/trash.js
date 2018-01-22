@@ -16,7 +16,8 @@ const getters = {
 const actions = {
   loadTrashes ({commit}, {page, perPage}) {
     const service = new BrochureService()
-    service.getTrash(page, perPage).then(data => {
+
+    return service.getTrash(page, perPage).then(data => {
       const trashes = data.content.data
       // resolveConsultant(brochures, consultants)
       commit(types.LOAD_TRASHES, trashes)

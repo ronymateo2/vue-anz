@@ -23,10 +23,10 @@ export default {
     brochures: 'getbrochures'
   }),
   created: function () {
-    this.loadBrochures({page: this.currentIndex, perPage: 10})
+    this.start({page: this.currentIndex, perPage: 10})
   },
   methods: {
-    ...mapActions(['loadBrochures']),
+    ...mapActions(['loadBrochures', 'start']),
     onSelected: function (index) {
       this.loadBrochures({page: index, perPage: 10}).then((data) => {
         this.currentIndex = index
