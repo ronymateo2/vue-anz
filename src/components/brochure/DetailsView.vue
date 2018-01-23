@@ -27,19 +27,17 @@
                     <tr>
                     <td>Consultant</td>
                     <td>
-                        <select v-if="user.roles.find(e=> e.name == 'admin') " >
+                        <!-- //  :selected="brochure.consultantId === consultant.id ? 'selected' : ''" -->
+                        <select v-if="user.roles.find(e=> e.name == 'admin') "  v-model="brochure.consultantId">
                             <option value=""></option>
-                            <option v-for="consultant in consultants" :key="consultant.id" :value="consultant.id"  :selected="brochure.consultantId === consultant.id ? 'selected' : ''">{{consultant.name}}</option>
+
+                            <option v-for="consultant in consultants" :key="consultant.id" :value="consultant.id" >{{consultant.name}}</option>
                         </select>
                     </td>
                     </tr>
                 </tbody>
             </table>
         </div>
-    </div>
-    <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal" v-on:click.prevent="close()" >Close</button>
-          <button type="button" class="btn btn-primary" v-on:click.prevent="save()" >Save changes</button>
     </div>
 </div>
 </template>
@@ -56,7 +54,8 @@ export default {
       consultants: 'getConsultants',
       user: 'getUser',
       brochureStatus: 'getBrochureStatus',
-      statuses: 'getStatuses'
+      statuses: 'getStatuses',
+      currentBrochure: 'getCurrentBrochure'
     })
   },
   methods: {
@@ -64,14 +63,7 @@ export default {
       return ['quotes', 'notes', 'consultant'].indexOf(meta) < 0
     },
     close: function () {
-      this.isActive = false
-    },
-    open: function () {
-      this.isActive = true
-    },
-    save: function () {
-      console.log(this.brochureConsultant)
-      console.log(this.brochureStatus)
+      this.$emit('onClose')
     }
   }
 }

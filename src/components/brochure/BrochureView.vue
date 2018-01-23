@@ -22,8 +22,8 @@
                 <a aria-expanded="false" href="#client" data-toggle="tab">Client</a>
               </li>
               <li>
-                <select class="select2-status" v-model="brochureStatus">
-                  <option :value="statuses['inbox'].description">{{statuses['inbox'].description}}</option>
+                <select class="select2-status" v-model="brochure.status">
+                  <option value="inbox">{{statuses['inbox'].description}}</option>
                   <option v-for="status in statuses['inbox'].next" :key="status" :value="status">{{statuses[status].description}}</option>
                 </select>
               </li>
@@ -31,13 +31,17 @@
             <!-- Tab panes -->
             <div class="tab-content">
               <div class="tab-pane fade" id='details' v-bind:class="{'active in': isActiveTab('details')}">
-                <brochure-details :brochure="brochure"></brochure-details>
+                <brochure-details :brochure="brochure"  ></brochure-details>
               </div>
               <div class="tab-pane fade" id="client" v-bind:class="{'active in' : isActiveTab('client')}">
-                <brochure-view :brochure="brochure" />
+                <brochure-view :brochure="brochure"  ></brochure-view>
               </div>
             </div>
           </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal" v-on:click.prevent="close()" >Close</button>
+            <button type="button" class="btn btn-primary" v-on:click.prevent="save()" >Save changes</button>
+            </div>
         </div>
       </div>
     </div>
@@ -45,13 +49,13 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import DetailsView from './DetailsView.vue'
 import ClientViewVue from './ClientView.vue'
 export default {
   name: 'anzcro-brochure-view',
   props: {
-    brochure: Object
+    intialBrochure: Object
   },
   components: {
     'brochure-details': DetailsView,
@@ -61,17 +65,17 @@ export default {
     return {
       isActive: false,
       user: window.User,
-      brochureConsultant: '',
-      activeTab: 'details'
+      activeTab: 'details',
+      brochure: this.intialBrochure
     }
   },
   computed: {
     ...mapGetters({
-      statuses: 'getStatuses',
-      brochureStatus: 'getbrochureStatus'
+      statuses: 'getStatuses'
     })
   },
   methods: {
+    ...mapActions(['updateDetails', 'updateClients']),
     evaluate: function (meta) {
       return ['quotes', 'notes', 'consultant'].indexOf(meta) < 0
     },
@@ -82,8 +86,8 @@ export default {
       this.isActive = true
     },
     save: function () {
-      console.log(this.brochureConsultant)
-      console.log(this.brochureStatus)
+      console.log(JSON.stringify(this.intialBrochure))
+      console.log(JSON.stringify(this.brochure))
     },
     makeActiveTab: function (value) {
       this.activeTab = value

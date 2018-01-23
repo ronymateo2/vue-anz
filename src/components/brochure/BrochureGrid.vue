@@ -24,7 +24,7 @@
         <td>{{brochure.created_at}}</td>
         <td></td>
         <td>
-          <anzcro-brochure-view :brochure="brochure"></anzcro-brochure-view>
+          <anzcro-brochure-view :intialBrochure="brochure"></anzcro-brochure-view>
         </td>
         <td>
           <button type="button" class="btn btn-danger trash" data-toggle="modal" data-target="#myModal" aria-label="Left Align"
@@ -46,17 +46,11 @@ export default {
     brochures: Array
   },
   data () {
-    return { brochureItem: {},
+    return {
       modalShown: false}
   },
   components: {
     'anzcro-brochure-view': AnzcroBrochureView
-  },
-  methods: {
-    showinfo: function (brochureItem) {
-      this.modalShown = true
-      this.brochureItem = brochureItem
-    }
   }
 }
 </script>
