@@ -7,11 +7,8 @@ const state = {
   isloaded: false,
   currentPage: 1,
   currentBrochure: {
-
   },
-  currentClient: {
-
-  }
+  updateStatus: null
 }
 
 // getters
@@ -47,15 +44,17 @@ const actions = {
 
           commit(types.LOAD_BROCHURES, { brochures, page: state.currentPage, total: data.content.total })
         })
-    }, 1000 * 5)
+    }, 1000 * 15)
   },
 
-  updateDetails ({commit, state}, {consultantId, statusId}) {
-    commit(types.UPDATE_BROCHURE_DETAILS, {consultantId, statusId})
-  },
-
-  updateClients ({commit, state}, client) {
-    commit(types.UPDATE_BROCHURE_CLIENT, client)
+  updateBrohure ({commit, dispatch}, brochure) {
+    const service = new BrochureService()
+    return service.saveBrochures(brochure).then((data) => {
+      commit(types.UPDATE_BROCHURE_UPDATE, 'successful')
+      return dispatch('loadBrochures', {page: 1, perPage: 10})
+    }).catch(() => {
+      commit(types.UPDATE_BROCHURE_UPDATE, 'fail')
+    })
   }
 }
 
@@ -79,12 +78,8 @@ const mutations = {
     state.brochuresCount = total
     state.currentPage = page
   },
-  [types.UPDATE_BROCHURE_DETAILS] (state, {consultantId, statusId}) {
-    state.currentBrochure.consultantId = consultantId
-    state.currentBrochure.statusId = statusId
-  },
-  [types.UPDATE_BROCHURE_CLIENT] (state, client) {
-    state.currentClient = client
+  [types.UPDATE_BROCHURE_UPDATE] (state, updateStatus) {
+    state.updateStatus = updateStatus
   }
 }
 

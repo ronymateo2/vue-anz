@@ -75,7 +75,7 @@ export default {
     })
   },
   methods: {
-    ...mapActions(['updateDetails', 'updateClients']),
+    ...mapActions(['updateBrohure']),
     evaluate: function (meta) {
       return ['quotes', 'notes', 'consultant'].indexOf(meta) < 0
     },
@@ -86,8 +86,9 @@ export default {
       this.isActive = true
     },
     save: function () {
-      console.log(JSON.stringify(this.intialBrochure))
-      console.log(JSON.stringify(this.brochure))
+      this.updateBrohure(this.brochure).then(() => {
+        this.close()
+      })
     },
     makeActiveTab: function (value) {
       this.activeTab = value
