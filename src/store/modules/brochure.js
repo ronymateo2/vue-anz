@@ -33,18 +33,18 @@ const actions = {
 
   start ({commit, state, rootState, dispatch}, {page, perPage}) {
     dispatch('loadBrochures', {page, perPage})
-    setInterval(() => {
-      const service = new BrochureService()
-      service.getBrochures(state.currentPage, perPage)
-        .then((data) => {
-          const brochures = data.content.data
-          const consultants = rootState.shared.consultants
+    // setInterval(() => {
+    //   const service = new BrochureService()
+    //   service.getBrochures(state.currentPage, perPage)
+    //     .then((data) => {
+    //       const brochures = data.content.data
+    //       const consultants = rootState.shared.consultants
 
-          resolveConsultant(brochures, consultants)
+    //       resolveConsultant(brochures, consultants)
 
-          commit(types.LOAD_BROCHURES, { brochures, page: state.currentPage, total: data.content.total })
-        })
-    }, 1000 * 15)
+    //       commit(types.LOAD_BROCHURES, { brochures, page: state.currentPage, total: data.content.total })
+    //     })
+    // }, 1000 * 15)
   },
 
   updateBrohure ({commit, dispatch}, brochure) {

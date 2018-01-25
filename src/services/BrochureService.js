@@ -14,12 +14,24 @@ export default class BrochureService {
     })
   }
   saveBrochures (brochure) {
-    // http://awf-carlocardenas.c9users.io/api/v1/enquiries/815
-    return axios.post(`enquiries/${brochure.id}`, brochure)
-      .then((data) => {
-        return data
+    return axios.put(`enquiries/${brochure.id}?$client_id=vue.app`, brochure)
+      .then((resolve) => {
+        return resolve
       })
   }
+  saveBrochuresv2 (brochure) {
+    // http://awf-carlocardenas.c9users.io/api/v1/enquiries/815
+    console.log(brochure)
+    return fetch.put(`enquiries/${brochure.id}?$client_id=vue.app`, brochure, {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+      .then((resolve) => {
+        return resolve
+      })
+  }
+
   getTrash (page, perPage, status = 'trash') {
     // http://awf-carlocardenas.c9users.io/api/v1/enquiries?page=1&per_page=10&status=trash
     return new Promise((resolve) => {

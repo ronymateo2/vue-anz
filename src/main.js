@@ -4,6 +4,11 @@ import Vue from 'vue'
 import Layout from './components/shared/Layout'
 import router from './router'
 import store from './store/index'
+// import BrochureService from './services/BrochureService'
+
+// const service = new BrochureService()
+
+// Vue.use(BrochureService)
 
 Vue.config.productionTip = false
 
